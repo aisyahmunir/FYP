@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %}Analysis{% endblock %} {% block
+content %}
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Analyse
+                </li>
+              </ol>
+            </nav>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Choose Plant</h5>
+                  </div>
+                  <div class="card-block">
+                    <h6>Choose the plant to be analysed in the form below.</h6>
+                    <p style="color: red">
+                      Note that the image file fetched will be of current date.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form method="POST" align="center">
+              {{ form.csrf_token }} {{ form.profile }} <br /><br />
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

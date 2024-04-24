@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Create Profile{% endblock %} {% block
+content %}
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{{ url_for('views.display') }}">Plant Profile</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Create New Profile
+                </li>
+              </ol>
+            </nav>
+            <div class="card">
+              <div class="card-body">
+                <h5>Create a new profile</h5>
+                <a href="/profile/show" style="display: inline-block">Back</a>
+                <hr />
+                <form method="POST" action="/profile">
+                  <div class="form-group">
+                    <label for="initial_date">Date of planting</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="initial_date"
+                      name="initial_date"
+                      placeholder="Enter the first date of planting"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="name_plant">Name of plant</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name_plant"
+                      name="name_plant"
+                      placeholder="Give a unique name for the plant"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="type_plant">Type of plant</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="type_plant"
+                      name="type_plant"
+                      placeholder="Enter the type of plant"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="device">Device name</label><br />
+                    <select class="form-control" name="device" id="device">
+                      <option value="Paddy1">Paddy Camera 1</option>
+                      <option value="Paddy2">Paddy Camera 2</option>
+                    </select>
+                  </div>
+                  <br />
+                  <button type="submit" class="btn btn-primary">
+                    Add Profile
+                  </button>
+                </form>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

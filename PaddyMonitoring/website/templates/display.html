@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Plant Profile{% endblock %} {% block
+content %}
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Plant Profile
+                </li>
+              </ol>
+            </nav>
+            <br />
+            {% if message %} {{ message }} {% endif %}
+            <div class="card">
+              <div class="card-header">
+                <a
+                  class="nav-item nav-link"
+                  id="Profile"
+                  href="/profile"
+                  style="display: inline-block"
+                  >Create new profile</a
+                ><a
+                  class="nav-item nav-link"
+                  id="Delete"
+                  href="/profile/modify"
+                  style="display: inline-block"
+                  >Delete profile</a
+                >
+                <span class="d-block m-t-5"></span>
+              </div>
+              <div class="text-dark mb-1">
+                <div class="card-block table-border-style">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th style="width: 3%"></th>
+                          <th style="width: 32%">Name</th>
+                          <th style="width: 20%">Date Planted</th>
+                          <th style="width: 20%">Plant Type</th>
+                          <th style="width: 20%">Device</th>
+                        </tr>
+                      </thead>
+                      {% for profile in profiles %}
+                      <div class="profile">
+                        <tbody>
+                          <tr>
+                            <td></td>
+                            <td>{{ profile.name_plant }}</td>
+                            <td>
+                              {{ profile.initial_date.strftime('%d-%m-%Y') }}
+                            </td>
+                            <td>{{ profile.type_plant }}</td>
+                            {% if profile.device == 'Legume1' %}
+                            <td>Long Bean Camera 1</td>
+                            {% elif profile.device == 'Legume2' %}
+                            <td>Long Bean Camera 2</td>
+                            {% elif profile.device == 'Paddy1' %}
+                            <td>Paddy Camera 1</td>
+                            {% else %}
+                            <td>Paddy Camera 2</td>
+                            {% endif %}
+                          </tr>
+                        </tbody>
+                      </div>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

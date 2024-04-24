@@ -1,0 +1,84 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %} {% block
+content %}
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Paddy
+                </li>
+              </ol>
+            </nav>
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <h5>Paddy</h5>
+                </div>
+                <div>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Plant Name</th>
+                          <th>Device Name</th>
+                          <th>Day</th>
+                          <th>Date</th>
+                          <th>Length (cm)</th>
+                          <th>RGB Values</th>
+                          <th>Stage</th>
+                        </tr>
+                      </thead>
+                      {% for profile, result in profiles %}
+                      <div class="results">
+                        <tbody>
+                          <tr
+                            class="text-dark mb-1 text-sm clickable-row"
+                            data-href="{{ url_for('analysis.display_dash', profile_id=profile.id) }}"
+                          >
+                            <td>{{ profile.name_plant }}</td>
+                            {% if profile.device == 'Paddy1' %}
+                            <td>Paddy Camera 1</td>
+                            {% else %}
+                            <td>Paddy Camera 2</td>
+                            {% endif %} {% if result %}
+                            <td>{{ result.days_since }}</td>
+                            <td>{{ result.date_updated | format_date }}</td>
+                            <td>{{ result.leaf_l }}</td>
+                            <td>{{ result.rgb_val }}</td>
+                            <td>{{ result.stage }}</td>
+                            {% endif %}
+                          </tr>
+                        </tbody>
+                      </div>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- JavaScript to make rows clickable -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const rows = document.querySelectorAll(".clickable-row");
+    rows.forEach((row) => {
+      row.addEventListener("click", () => {
+        window.location.href = row.dataset.href;
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{{ url_for('views.index') }}">Paddy</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{{ url_for('analysis.display_dash') }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Choose Date
+                </li>
+              </ol>
+            </nav>
+            <h3 align="center">Display Dashboard</h3>
+            <form
+              method="POST"
+              action="{{ url_for('analysis.dashboard_option') }}"
+            >
+              {{ form.csrf_token }}
+              <label for="profile">Profile:</label>
+              {{ form.profile(class="form-control", id="profile") }}
+
+              <label for="result_date">Result Date:</label>
+              <select
+                name="result_date"
+                id="result_date"
+                class="form-control"
+              ></select>
+              <!-- Result date input using flatpickr -->
+              <!-- <label for="result_date">Select Result Date:</label>
+              <input
+                type="text"
+                id="result_date"
+                name="result_date"
+                placeholder="Select Date"
+              /> -->
+
+              <button type="submit">Submit</button>
+            </form>
+            <script>
+              $(document).ready(function () {
+                // Set up an event listener for the profile dropdown change
+                $("#profile").change(function () {
+                  var profile_id = $(this).val();
+
+                  // Check if a profile ID is selected
+                  if (profile_id) {
+                    // Make an AJAX request to fetch result date choices based on the selected profile
+                    $.ajax({
+                      type: "GET",
+                      url: "/get_result_dates/" + profile_id,
+                      success: function (data) {
+                        console.log("Received data:", data);
+
+                        // Clear existing options
+                        $("#result_date").empty();
+
+                        // Append each option to the dropdown
+                        data.forEach(function (result) {
+                          if (
+                            result.id !== undefined &&
+                            result.date_updated !== undefined
+                          ) {
+                            // Use result.profile_id as the option value
+                            // Display result.date_updated in the dropdown
+                            $("#result_date").append(
+                              '<option value="' +
+                                result.id +
+                                '">' +
+                                result.date_updated +
+                                "</option>"
+                            );
+                          } else {
+                            console.warn("Skipping invalid result:", result);
+                          }
+                        });
+
+                        console.log(
+                          "Dropdown HTML after update:",
+                          $("#result_date").html()
+                        );
+                      },
+                    });
+                  } else {
+                    // No profile ID selected, clear the result_date dropdown
+                    $("#result_date").empty();
+                  }
+                });
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

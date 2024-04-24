@@ -1,0 +1,394 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %} {% block
+content %}
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{{ url_for('views.index') }}">Paddy</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Dashboard
+                </li>
+                <li class="breadcrumb-item ml-auto">
+                  <a href="{{ url_for('analysis.dashboard_option') }}"
+                    >Choose Date</a
+                  >
+                </li>
+              </ol>
+            </nav>
+            {% with messages = get_flashed_messages(with_categories=true) %} {%
+            if messages %}
+            <div class="container">
+              {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+            {% endif %} {% endwith %}
+            <span class="d-block text-right small"
+              >Last Updated: {{ result.date_updated | format_datetime }}</span
+            >
+            <br />
+            <!-- New dash -->
+            <div class="row">
+              <div
+                class="col-md-6 col-xl-4"
+                style="padding-right: 5px; padding-left: 5px"
+              >
+                <div class="well">
+                  <div class="card" style="height: 325px">
+                    <div class="card-block">
+                      <h6 class="mb-4">Plant Image</h6>
+                      <div
+                        class="d-flex align-items-center justify-content-center flex-column"
+                      >
+                        <div class="w-50 p-3">
+                          <img
+                            src="{{ image_url }}"
+                            class="img-fluid"
+                            alt="Actual Image"
+                            style="width: 200px; height: 200px"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="well">
+                      <div class="card">
+                        <div class="card-block">
+                          <h6 class="mb-4">Stage</h6>
+                          {% if result.stage == 'Vegetative' %}
+                          <div class="row d-flex align-items-center">
+                            <div class="col-9">
+                              <h4 class="d-flex align-items-center">
+                                <i
+                                  class="feather icon-loader text-c-yellow f-30 m-r-10"
+                                ></i>
+                                {{ result.stage }}
+                              </h4>
+                            </div>
+                            <div class="col-3 text-right">
+                              <p class="m-b-0">1/3</p>
+                            </div>
+                          </div>
+                          <div class="progress m-t-30" style="height: 7px">
+                            <div
+                              class="progress-bar progress-c-green"
+                              role="progressbar"
+                              style="width: 35%"
+                              aria-valuenow="35"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            ></div>
+                            <!-- For this do 35%, 67% and 100%  -->
+                          </div>
+                          {% elif result.stage == 'Reproductive' %}
+                          <div class="row d-flex align-items-center">
+                            <div class="col-9">
+                              <h3 class="d-flex align-items-center">
+                                <i
+                                  class="feather icon-loader text-c-yellow f-30 m-r-10"
+                                ></i>
+                                {{ result.stage }}
+                              </h3>
+                            </div>
+                            <div class="col-3 text-right">
+                              <p class="m-b-0">2/3</p>
+                            </div>
+                          </div>
+                          <div class="progress m-t-30" style="height: 7px">
+                            <div
+                              class="progress-bar progress-c-green"
+                              role="progressbar"
+                              style="width: 67%"
+                              aria-valuenow="67"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            ></div>
+                            <!-- For this do 35%, 67% and 100%  -->
+                          </div>
+                          {% else %}
+                          <div class="row d-flex align-items-center">
+                            <div class="col-9">
+                              <h3 class="d-flex align-items-center">
+                                <i
+                                  class="feather icon-thumbs-up text-c-green f-30 m-r-10"
+                                ></i>
+                                {{ result.stage }}
+                              </h3>
+                            </div>
+                            <div class="col-3 text-right">
+                              <p class="m-b-0">3/3</p>
+                            </div>
+                          </div>
+                          <div class="progress m-t-30" style="height: 7px">
+                            <div
+                              class="progress-bar progress-c-green"
+                              role="progressbar"
+                              style="width: 97%"
+                              aria-valuenow="97"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            ></div>
+                            <!-- For this do 35%, 67% and 100%  -->
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="well">
+                      <div class="card" style="height: 175px">
+                        <div class="card-block">
+                          <h6 class="mb-4">RGB Colour</h6>
+                          <div
+                            class="d-flex align-items-center justify-content-center flex-column"
+                          >
+                            <div class="w-50 p-3">
+                              <img
+                                src="{{ url_for('static', filename='temp_image.png') }}"
+                                class="img-fluid"
+                                alt="Actual Image"
+                                style="width: 200px; height: 20px"
+                              />
+                            </div>
+                            <span class="d-block text-uppercase"
+                              >{{ result.rgb_val }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="well">
+                      <div class="card">
+                        <div class="card-block">
+                          <div class="row d-flex align-items-center">
+                            <div class="col-auto">
+                              <i
+                                class="feather icon-calendar f-30 text-c-blue"
+                              ></i>
+                            </div>
+                            <div class="col">
+                              <h3 class="f-w-400">{{ result.days_since }}</h3>
+                              <span class="d-block text-uppercase"
+                                >DAYS SINCE</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="well">
+                      <div class="card">
+                        <div class="card-block">
+                          <div class="row d-flex align-items-center">
+                            <div class="col-auto">
+                              <i
+                                class="feather icon-feather f-30 text-c-blue"
+                              ></i>
+                            </div>
+                            <div class="col">
+                              <h3 class="f-w-400">{{ result.leaf_l }}</h3>
+                              <span class="d-block text-uppercase"
+                                >Leaf Length</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="col-xl-4 col-md-4"
+                style="padding-right: 5px; padding-left: 5px"
+              >
+                <div class="well">
+                  <div class="card" style="height: 325px">
+                    <div class="card-block">
+                      <div class="card-header">
+                        <h5>Plant Profile</h5>
+                      </div>
+                      <div class="text-dark mb-1">
+                        <div class="table-responsive">
+                          <table class="table">
+                            <div class="profile">
+                              <tr>
+                                <td style="font-weight: bold">Name</td>
+                                <td>{{ profile.name_plant }}</td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: bold">Date planted</td>
+                                <td>
+                                  {{ profile.initial_date.strftime('%d-%m-%Y')
+                                  }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: bold">Plant type</td>
+                                <td>{{ profile.type_plant }}</td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: bold">Device</td>
+                                {% if profile.device == 'Legume1' %}
+                                <td>Long Bean Camera 1</td>
+                                {% elif profile.device == 'Legume2' %}
+                                <td>Long Bean Camera 2</td>
+                                {% elif profile.device == 'Paddy1' %}
+                                <td>Paddy Camera 1</td>
+                                {% else %}
+                                <td>Paddy Camera 2</td>
+                                {% endif %}
+                              </tr>
+                            </div>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="well">
+                  <div class="card" style="height: 325px">
+                    <div class="card-block">
+                      <h6 class="mb-4">Health Status</h6>
+                      <div
+                        class="d-flex align-items-center justify-content-center flex-column"
+                      >
+                        <div class="col-9">
+                          {% if result.health_stat == 'Healthy' %}
+                          <div
+                            class="card d-flex align-items-center justify-content-center flex-column"
+                            style="
+                              text-align: center;
+                              padding: 50px;
+                              border-radius: 50%;
+                              background-color: palegreen;
+                            "
+                          >
+                            <div class="card-body text-center">
+                              <h4 class="d-flex align-items-center">
+                                {{ result.health_stat }}
+                              </h4>
+                            </div>
+                          </div>
+                          {% else %}
+                          <div
+                            class="card d-flex align-items-center justify-content-center flex-column"
+                            style="
+                              text-align: center;
+                              padding: 50px;
+                              border-radius: 50%;
+                              background-color: crimson;
+                            "
+                          >
+                            <div class="card-body text-center">
+                              <h4 class="d-flex align-items-center text-white">
+                                {{ result.health_stat }}
+                              </h4>
+                            </div>
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="well">
+                  <div class="card" style="height: 325px">
+                    <div class="card-block">
+                      <h6 class="mb-4">Disease Detected</h6>
+                      <div
+                        class="d-flex align-items-center justify-content-center flex-column"
+                      >
+                        <div class="col-9">
+                          {% if result.disease == 'None' %}
+                          <div
+                            class="card d-flex align-items-center justify-content-center flex-column"
+                            style="
+                              text-align: center;
+                              padding: 50px;
+                              background-color: palegreen;
+                            "
+                          >
+                            <div class="card-body text-center">
+                              <h4 class="d-flex align-items-center">
+                                {{ result.disease }}
+                              </h4>
+                            </div>
+                          </div>
+                          {% else %}
+                          <div
+                            class="card d-flex align-items-center justify-content-center flex-column"
+                            style="
+                              text-align: center;
+                              padding: 50px;
+                              background-color: lightcoral;
+                              height: 100px;
+                              width: 210px;
+                              border-radius: 30%;
+                            "
+                          >
+                            <div class="card-body text-center">
+                              <h4 class="d-flex align-items-center text-white">
+                                {{ result.disease }}
+                              </h4>
+                            </div>
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://appsrv1-147a1.kxcdn.com/data-able-v100-enh1/js/vendor-all.min.js"></script>
+  <script src="https://appsrv1-147a1.kxcdn.com/data-able-v100-enh1/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://appsrv1-147a1.kxcdn.com/data-able-v100-enh1/js/pcoded.min.js"></script>
+  <script src="https://appsrv1-147a1.kxcdn.com/data-able-v100-enh1/js/dark-mode.js"></script>
+
+  <style>
+    .custom-breadcrumb {
+      padding: 0.15rem 1rem;
+      margin-bottom: 5px;
+    }
+    .custom-row-margin {
+      margin-bottom: 0.15rem; /* Adjust the margin as needed */
+    }
+  </style>
+
+  {% endblock %}
+</div>

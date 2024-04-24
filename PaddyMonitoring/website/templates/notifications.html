@@ -1,0 +1,184 @@
+{% extends "base.html" %}{% block title %}Notification{% endblock %} {% block
+content %}
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb custom-breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Notifications
+                </li>
+              </ol>
+            </nav>
+            <div class="card">
+              <div class="card-header">
+                <h5>Notifications</h5>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <div class="notification">
+                    <thead>
+                      <tr>
+                        <th>Uncleared</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    {% for message in uncleared_messages %}
+                    <tbody>
+                      <tr>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-warning"
+                            title="btn btn-warning"
+                          >
+                            Warning
+                          </button>
+                        </td>
+                        <td>
+                          <h6 class="mb-1">{{ message.text }}</h6>
+                          <p class="m-0">{{ message.result.profile.device }}</p>
+                        </td>
+                        <td>
+                          <h6 class="text-muted">
+                            <i class="fas fa-circle text-c-red f-10 m-r-15"></i
+                            >{{ message.result.date_updated | format_date}}
+                          </h6>
+                        </td>
+                        <td>
+                          <button
+                            class="clear-button label text-white f-12"
+                            data-id="{{ message.id }}"
+                            style="background-color: coral"
+                          >
+                            Clear
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                    {% endfor %}
+                  </div>
+                </table>
+              </div>
+              {% if uncleared_messages %}
+              <button id="delete-uncleared" class="btn btn-outline-danger">
+                Delete All Uncleared Messages
+              </button>
+              {% endif %}
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <div class="notification">
+                    <thead>
+                      <tr>
+                        <th>Cleared</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    {% for message in cleared_messages %}
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h6 class="mb-1">{{ message.text }}</h6>
+                          <p class="m-0">{{ message.result.profile.device }}</p>
+                        </td>
+                        <td>
+                          <h6 class="text-muted">
+                            <i class="fas fa-circle text-c-red f-10 m-r-15"></i
+                            >{{ message.result.date_updated | format_date}}
+                          </h6>
+                        </td>
+                      </tr>
+                    </tbody>
+                    {% endfor %}
+                  </div>
+                </table>
+              </div>
+              {% if cleared_messages %}
+              <button id="delete-cleared" class="btn btn-outline-danger">
+                Delete All Cleared Messages
+              </button>
+              {% endif %}
+            </div>
+            <script>
+              $(document).ready(function () {
+                // Add a click event listener to the "Clear" button
+                $(".clear-button").click(function () {
+                  // Get the message id from the data-id attribute
+                  var message_id = $(this).data("id");
+
+                  // Save a reference to the button's parent container
+                  var messageContainer = $(this).closest(".message-container");
+
+                  // Make an AJAX request to clear the message
+                  $.ajax({
+                    type: "POST",
+                    url: "/clear_message/" + message_id,
+                    success: function (response) {
+                      // Handle success, e.g., move the message to the cleared section
+                      console.log("Message cleared successfully");
+
+                      // Remove the message from the uncleared section
+                      messageContainer.detach();
+
+                      // Append the message to the cleared section
+                      $("#cleared-messages").append(messageContainer);
+
+                      // Redirect to another URL after successful deletion
+                      window.location.href = "/notifications";
+                    },
+                    error: function (error) {
+                      // Handle error
+                      console.error("Error clearing message:", error);
+                    },
+                  });
+                });
+              });
+              $(document).ready(function () {
+                // Add a click event listener to the "Delete All" button in the uncleared section
+                $("#delete-uncleared").click(function () {
+                  deleteAllMessages("uncleared");
+                });
+
+                // Add a click event listener to the "Delete All" button in the cleared section
+                $("#delete-cleared").click(function () {
+                  deleteAllMessages("cleared");
+                });
+
+                function deleteAllMessages(section) {
+                  // Make an AJAX request to delete all messages from the specified section
+                  $.ajax({
+                    type: "POST",
+                    url: "/delete_notifications/" + section,
+                    success: function (response) {
+                      // Handle success, e.g., remove all messages from the UI
+                      console.log("Messages deleted successfully");
+                      // Optionally, you might remove the deleted messages from the UI
+                      $(".message-container").remove();
+
+                      // Redirect to another URL after successful deletion
+                      window.location.href = "/notifications";
+                    },
+                    error: function (error) {
+                      // Handle error
+                      console.error("Error deleting messages:", error);
+                    },
+                  });
+                }
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
